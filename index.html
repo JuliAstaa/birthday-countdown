@@ -203,12 +203,14 @@
         hours.innerHTML = `${Math.floor((timeDifference % day) / hour)}`;
         minutes.innerHTML = `${Math.floor((timeDifference % hour) / minute)}`;
         seconds.innerHTML = `${Math.floor((timeDifference % minute) / second)}`;
+
+        //update setiap detik
       };
 
-      calculate.addEventListener("click", updateCountdown);
-
-      //update setiap detik
-      setInterval(updateCountdown, 1000);
+      calculate.addEventListener("click", () => {
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+      });
     </script>
   </body>
 </html>
