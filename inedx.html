@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Countdown</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .container {
+        padding: 1rem;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .countdown-wrapper {
+        width: 50%;
+        height: 50%;
+        border: 5px solid black;
+        box-shadow: 10px 10px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .input {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .input input {
+        width: 100%;
+        height: 35px;
+        font-size: 20px;
+      }
+
+      #calculate {
+        margin-top: 0.5rem;
+        background-color: cyan;
+      }
+
+      .countdown {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 1rem;
+      }
+
+      .days,
+      .hours,
+      .minutes,
+      .seconds {
+        width: 100px;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 20px;
+      }
+      span {
+        border: 2px solid black;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+      }
+
+      @media only screen and (max-width: 600px) {
+        * {
+          overflow: hidden;
+        }
+        .countdown-wrapper {
+          padding: 8px;
+          width: 100%;
+          height: 75%;
+        }
+        .days,
+        .hours,
+        .minutes,
+        .seconds {
+          width: 70px;
+          height: fit-content;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-size: 15px;
+        }
+
+        span {
+          border: 2px solid black;
+          width: 70px;
+          height: 70px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 35px;
+        }
+
+        h3 {
+          text-align: center;
+        }
+        .input input {
+          width: 100%;
+          height: 50px;
+          font-size: 20px;
+          border: 2px solid black;
+        }
+
+        #calculate {
+          margin-top: 1rem;
+          background-color: cyan;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="countdown-wrapper">
+        <div class="input">
+          <h3>Masukkan tanggal ulang tahunmu</h3>
+          <input type="date" name="" id="birthday" />
+          <input type="submit" value="Calculate" id="calculate" />
+        </div>
+        <div class="countdown">
+          <div class="days">
+            <span id="days">0</span>
+            <p>Days</p>
+          </div>
+          <div class="hours">
+            <span id="hours">0</span>
+            <p>Hours</p>
+          </div>
+          <div class="minutes">
+            <span id="minutes">0</span>
+            <p>Minutes</p>
+          </div>
+          <div class="seconds">
+            <span id="seconds">0</span>
+            <p>Seconds</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const calculate = document.getElementById("calculate");
+
+      const updateCountdown = () => {
+        //DOM
+        const birthdayInput = document.getElementById("birthday");
+        const days = document.getElementById("days");
+        const hours = document.getElementById("hours");
+        const minutes = document.getElementById("minutes");
+        const seconds = document.getElementById("seconds");
+
+        //DATE
+        const birthdayDate = new Date(birthdayInput.value).getTime();
+        const now = new Date().getTime();
+
+        //selisih waktu
+        const timeDifference = birthdayDate - now;
+
+        //bantuan variabel
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+
+        //check jika input ksong
+        if (!birthdayInput.value) {
+          return;
+        }
+
+        //validasi
+        if (isNaN(birthdayDate)) {
+          alert("Masukkan tanggal yang benar");
+          return;
+        }
+
+        //valiadsi jka memasukkan tanggal dimasa lalu
+        if (timeDifference < 0) {
+          alert("Masukkan tanggal yang akan datang");
+          birthdayInput.value = "";
+          return;
+        }
+
+        days.innerHTML = `${Math.floor(timeDifference / day)}`;
+        hours.innerHTML = `${Math.floor((timeDifference % day) / hour)}`;
+        minutes.innerHTML = `${Math.floor((timeDifference % hour) / minute)}`;
+        seconds.innerHTML = `${Math.floor((timeDifference % minute) / second)}`;
+      };
+
+      calculate.addEventListener("click", updateCountdown);
+
+      //update setiap detik
+      setInterval(updateCountdown, 1000);
+    </script>
+  </body>
+</html>
